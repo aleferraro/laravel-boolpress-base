@@ -1,0 +1,9 @@
+Per l'esercizio di oggi dovrete
+
+1. Creare un nuovo progetto Laravel di nome laravel-boolpress-base
+2. Usate le migration in allegato per creare le tabelle nel DB e usatele come riferimento per le decisioni che prenderete successivamente; siete liberi di inferire dal tipo del dato e dal nome della colonna quello che dovrete inserire nei record, ma se avete dubbi, chiedete ( ad. es. che cos'e' uno slug? Forse su google trovo degli esempi... )
+3. Inizializzate i modelli Eloquent (make:model) per ognuna delle tabelle create
+4. Create una factory (make:factory) per ogni modello; i dati generati randomicamente devono rispettare il tipo di dato definito nella migration e devono essere anche coerenti con l'informazione che deve esprimere
+5. Create un seeder (make:seeder) per ogni modello e usate la factory opportuna che generi un numero consono di elementi a seconda della tabella che va a popolare ( posso avere 1000 record nella tabella categorie? Forse ne servono molti meno... )
+
+Gli esercizi dei prossimi giorni estenderanno questo progetto, quindi se avete voglia di inizializzare qualche vista per i dati sapete come fare
