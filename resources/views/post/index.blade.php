@@ -14,6 +14,7 @@
                     <th scope="col">Titolo</th>
                     <th scope="col">Categoria</th>
                     <th scope="col">Descrizione</th>
+                    <th scope="col">Tags</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,11 @@
                         <td>{{ $post->title }}</td>
                         <td>{{ $post->category->title }}</td>
                         <td>{{ $post->postInformation->description }}</td>
+                        <td>
+                            @foreach ($post->tags as $tag)
+                                {{ $tag->name }}
+                            @endforeach
+                        </td>
                     </tr>
 
                 @endforeach
