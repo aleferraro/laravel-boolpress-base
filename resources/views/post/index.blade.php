@@ -7,6 +7,8 @@
     <div class="container">
         <h1>Posts</h1>
 
+        <a class="btn btn-primary" href="{{ route('post.create') }}" role="button">Nuovo Post</a>
+
         <table class="table">
             <thead>
                 <tr>

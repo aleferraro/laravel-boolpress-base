@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use App\Post;
+use App\PostInformation;
+use App\Category;
 
 
 class PostController extends Controller
@@ -28,8 +33,10 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
+    {   
+        $categories = Category::all();
+
+        return view('post.create', compact('categories'));
     }
 
     /**
@@ -39,8 +46,33 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        $categories = DB::table('categories')->where('title', '=', $request->category)->get();
+
+        foreach ($categories as $category){
+            $categoryId = $category->id;
+        }
+
+        $newPost = new Post;
+
+        $newPost->title = $request->title;
+        $newPost->author = $request->author;
+        $newPost->category_id = $categoryId;
+
+        $newPost->save();
+
+        $postId = $newPost->id;
+
+
+        $newPostInformation = new PostInformation();
+
+        $newPostInformation->description = $request->description;
+        $newPostInformation->slug = Str::slug($newPost->title, '-');
+        $newPostInformation->post_id = $postId;
+
+        $newPostInformation->save();
+
+        return view('post.store');
     }
 
     /**
