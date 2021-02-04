@@ -7,3 +7,26 @@ Per l'esercizio di oggi dovrete
 5. Create un seeder (make:seeder) per ogni modello e usate la factory opportuna che generi un numero consono di elementi a seconda della tabella che va a popolare ( posso avere 1000 record nella tabella categorie? Forse ne servono molti meno... )
 
 Gli esercizi dei prossimi giorni estenderanno questo progetto, quindi se avete voglia di inizializzare qualche vista per i dati sapete come fare
+
+-------------------------------------------------------------------
+
+
+Ciao ragazzi! Sulla base del progetto che avete creato ieri, dopo aver aggiornato i seeder con le accortezze viste oggi in classe, definite nei modelli le relazioni con le seguenti cardinalita':
+1. Category -> Post ( * )
+2. Post -> Category ( 1 )
+3. Info -> Post ( 1 )
+4. Post -> Info ( 1 )
+
+Infine create una vista che mi permette di visualizzare, sulla rotta /posts , una tabella che contiene:
+- titolo del post
+- nome della categoria
+- descrizione del post
+
+aggregando le informazioni sparse nelle tre tabelle facendo uso delle relazioni definite sui modelli.
+
+-------------------------------------------------------------------
+
+
+Ciao ragazzi! Continuiamo sulla scia del progetto degli ultimi due giorni aggiungendo una nuova entita' Tag che si relaziona con Post con una cardinalita' many to many ( 1 tag puo essere assegnato a tanti post, 1 post puo essere assegnato a tanti tag ). 
+Generate quindi - con una migration - la nuova tabella che conterra' i tags e una tabella ponte / pivot che permette la relazione suddetta; popolate le tabelle come visto in classe. 
+Istruite Laravel a relazionare il modello gia esistente Post al nuovo modello - che dovete creare - Tag. A questo punto generate un controller / resource per gestire le CRUD dei Post e implementate tutte le azioni, collegandole alle opportune viste. Questo esercizio deve dimostrare che siate riusciti ad usare le funzionalita' viste oggi per trattare con tutti i tipi / cardinalita' di relazione possibili.

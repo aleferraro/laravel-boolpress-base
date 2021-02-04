@@ -6,8 +6,21 @@ use App\Category;
 use Faker\Generator as Faker;
 
 $factory->define(Category::class, function (Faker $faker) {
+    
+    $words = $faker->words();
+    
+    $title = '';
+    
+    foreach($words as $word){
+        $title .= ucfirst($word) . ' ';
+    }
+
+    $title = trim($title);
+
+    $slug =implode('-', $words);
+
     return [
-        'title' => $faker->word,
-        'slug' => $faker->slug
+        'title' => $title,
+        'slug' => $slug
     ];
 });
