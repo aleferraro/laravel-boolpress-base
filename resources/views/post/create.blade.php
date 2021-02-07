@@ -38,7 +38,6 @@
                             </label>
                         </div>
                     @endforeach
-                    {{ $tags->links() }}
                 </div>
                 <button type="submit" class="btn btn-primary">Salva Post</button>
             </form>

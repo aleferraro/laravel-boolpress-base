@@ -37,7 +37,7 @@ class PostController extends Controller
     public function create()
     {   
         $categories = Category::all();
-        $tags = Tag::paginate(10);
+        $tags = Tag::all();
 
         return view('post.create', compact('categories', 'tags'));
     }
@@ -103,7 +103,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $categories = Category::all();
-        $tags = Tag::paginate(10);
+        $tags = Tag::all();
         
         return view('post.edit', compact('post', 'categories', 'tags'));
     }
