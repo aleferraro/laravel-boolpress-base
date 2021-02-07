@@ -21,4 +21,6 @@ class Post extends Model
     {
         return $this->belongsToMany('App\Tag', 'post_tag', 'post_id', 'tag_id');
     }
+
+    protected $fillable = ['title', 'author', 'category_id'];
 }

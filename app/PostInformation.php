@@ -12,4 +12,5 @@ class PostInformation extends Model
         return $this->belongsTo('App\Post');
     }
 
+    protected $fillable = ['description'];
 }

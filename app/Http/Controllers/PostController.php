@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 use App\Post;
 use App\PostInformation;
 use App\Category;
+use App\Tag;
+
 
 
 class PostController extends Controller
@@ -21,7 +23,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::paginate(20);
 
 
         return view('post.index', compact('posts'));
@@ -35,8 +37,9 @@ class PostController extends Controller
     public function create()
     {   
         $categories = Category::all();
+        $tags = Tag::paginate(10);
 
-        return view('post.create', compact('categories'));
+        return view('post.create', compact('categories', 'tags'));
     }
 
     /**
@@ -47,17 +50,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {   
-        $categories = DB::table('categories')->where('title', '=', $request->category)->get();
-
-        foreach ($categories as $category){
-            $categoryId = $category->id;
-        }
 
         $newPost = new Post;
 
         $newPost->title = $request->title;
         $newPost->author = $request->author;
-        $newPost->category_id = $categoryId;
+        $newPost->category_id = $request->category;
 
         $newPost->save();
 
@@ -71,6 +69,15 @@ class PostController extends Controller
         $newPostInformation->post_id = $postId;
 
         $newPostInformation->save();
+
+        foreach ($request->tags as $tag){
+
+            DB::table('post_tag')->insert([
+                'post_id' => $postId,
+                'tag_id' => $tag
+            ]);
+
+        };
 
         return view('post.store');
     }
@@ -94,9 +101,13 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+        $categories = Category::all();
+        $tags = Tag::paginate(10);
+        
+        return view('post.edit', compact('post', 'categories', 'tags'));
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -106,8 +117,42 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+        
+        foreach ($request->tags as $tag){
+    
+            foreach ($post->tags as $postTag){
+                if($tag != $postTag->id){
+                    DB::table('post_tag')->insert([
+                        'post_id' => $post->id,
+                        'tag_id' => $tag
+                    ]);
+                } else if(!in_array($postTag->id, $request->tags)){
+                    DB::table('post_tag')->where('post_id', $post->id)->where('tag_id', $postTag->id)->delete();
+                }
+            };
+    
+        };
+
+        $postData =[
+            'title' => $request->title,
+            'author' => $request->author,
+            'category_id' => $request->category,
+        ];
+
+        $post->update($postData);
+
+        $postInformation = PostInformation::where('post_id', '=', $id);
+
+        $postinfoData = [
+            'description' => $request->description,
+        ];
+
+        $postInformation->update($postinfoData);
+
+        return view('post.update');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -117,6 +162,13 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $postTags = DB::table('post_tag')->where('post_id', '=', $id)->delete();
+        
+        PostInformation::where('post_id', '=', $id)->delete();
+        
+        Post::destroy($id);
+        
+
+        return view('post.destroy');
     }
 }
