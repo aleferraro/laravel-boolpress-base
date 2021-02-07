@@ -118,22 +118,30 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $post = Post::find($id);
-        
-        foreach ($request->tags as $tag){
-    
-            foreach ($post->tags as $postTag){
-                if($tag != $postTag->id){
-                    DB::table('post_tag')->insert([
-                        'post_id' => $post->id,
-                        'tag_id' => $tag
-                    ]);
-                } else if(!in_array($postTag->id, $request->tags)){
-                    DB::table('post_tag')->where('post_id', $post->id)->where('tag_id', $postTag->id)->delete();
-                }
-            };
-    
-        };
 
+        $postTagsId = [];
+        foreach ($post->tags as $postTag){
+            array_push($postTagsId, $postTag->id);
+        }
+
+
+        foreach ($request->tags as $tag){
+            
+            if(!in_array($tag, $postTagsId)){
+                DB::table('post_tag')->insert([
+                    'post_id' => $post->id,
+                    'tag_id' => $tag
+                ]);
+            };
+        }
+
+        foreach ($postTagsId as $postTag){
+            if(!in_array($postTag, $request->tags)){
+                DB::table('post_tag')->where('post_id', $post->id)->where('tag_id', $postTag)->delete();
+            };
+        }
+        
+            
         $postData =[
             'title' => $request->title,
             'author' => $request->author,

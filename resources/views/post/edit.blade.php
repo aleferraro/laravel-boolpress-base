@@ -36,7 +36,7 @@
                             <input 
                                 class="form-check-input" type="checkbox" 
                                 value="{{ $tag->id }}" 
-                                id="tags" 
+                                id="tag{{ $tag->id}}" 
                                 name="tags[]" 
                                 
                                 @foreach ($post->tags as $postTag)
